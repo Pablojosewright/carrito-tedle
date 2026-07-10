@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carrito de Compras TEDLE - Lista de precios</title>
+<style>
+:root{--blue:#005b9f;--green:#22b14c;--bg:#f5f7fa;--ink:#1a2332;--muted:#5a6577;--line:#d8dde5;--softblue:#f0f7ff;--warning:#fff7ed;--danger:#fee2e2}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+header{background:#fff;border-bottom:4px solid var(--blue);padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand img{height:64px;max-width:280px;object-fit:contain}
+.brand-text{font-size:28px;font-weight:900;color:var(--blue)}
+.tag{font-size:13px;color:var(--muted);text-align:right;line-height:1.35}
+.container{max-width:1120px;margin:24px auto;padding:0 14px}
+.hero{background:linear-gradient(135deg,#fff,#eef6ff);border:1px solid var(--line);border-radius:18px;padding:26px;margin-bottom:18px;box-shadow:0 8px 28px rgba(0,91,159,.08)}
+.hero h1{margin:0 0 8px;color:var(--blue);font-size:32px}
+.hero p{margin:0;color:var(--muted);font-size:16px;line-height:1.45}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{background:#e8f5e9;color:#166534;border:1px solid #bbdfc0;border-radius:999px;padding:8px 13px;font-size:13px;font-weight:800;cursor:pointer}
+.badge.active{background:var(--blue);color:white;border-color:var(--blue)}
+.grid{display:grid;grid-template-columns:1.05fr .62fr;gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 5px 18px rgba(0,91,159,.05);margin-bottom:18px}
+.section-title{font-size:15px;font-weight:900;color:var(--blue);margin:0 0 14px;text-transform:uppercase;letter-spacing:.4px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+label{display:block;font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;margin-bottom:5px}
+input,select,textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:86px;resize:vertical}
+.full{grid-column:1/-1}
+.addbox{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.products{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.products table{width:100%;border-collapse:collapse}
+.products th{font-size:11px;text-transform:uppercase;color:var(--muted);background:#f7f9fc;text-align:left;padding:9px;border-bottom:1px solid var(--line)}
+.products td{padding:8px;border-bottom:1px solid #eef2f7;vertical-align:middle;font-size:13px}
+.qty{width:100px;text-align:center}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 15px;font-weight:900;cursor:pointer}
+.primary{background:var(--blue);color:white}
+.secondary{background:#eef2f7;color:var(--blue);border:1px solid var(--line)}
+.green{background:var(--green);color:white}
+.danger{background:var(--danger);color:#991b1b;padding:6px 9px;font-size:12px}
+.product-info{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.35}
+.aside-box{background:var(--softblue);border:1px solid #c3d9f5;border-radius:14px;padding:14px;margin-bottom:14px}
+.aside-box h3{margin:0 0 8px;color:var(--blue)}
+.aside-box p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.steps{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.5}
+.status{background:var(--warning);border:1px solid #fed7aa;color:#7c2d12;border-radius:12px;padding:12px;font-size:13px;line-height:1.45;margin-bottom:14px}
+.success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:12px;padding:12px;font-size:13px;line-height:1.45}
+.empty{color:var(--muted);font-size:13px;text-align:center;padding:16px}
+.summary{display:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;white-space:pre-wrap;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:var(--ink);line-height:1.4;margin-top:12px}
+.footer-note{text-align:center;color:var(--muted);font-size:12px;margin:18px 0}
+@media(max-width:850px){header{display:block}.brand img{height:54px;max-width:240px}.tag{text-align:left;margin-top:8px}.grid,.form-grid{grid-template-columns:1fr}.hero h1{font-size:26px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><img src="data:image/png;base64,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" alt="TEDLE"></div>
+  <div class="tag">Carrito de Compras TEDLE<br>Selección desde lista de precios</div>
+</header>
+
+<div class="container">
+  <section class="hero">
+    <h1>Carrito de Compras TEDLE</h1>
+    <p>Seleccioná productos cargados desde la lista de precios TEDLE, agregá cantidades y enviá la solicitud por WhatsApp. No se muestran precios, descuentos ni stock.</p>
+    <div class="badges">
+      <button type="button" class="badge active" onclick="filterProducts('Todos', this)">Todos</button>
+      <button type="button" class="badge" onclick="filterProducts('Paneles', this)">Paneles</button>
+      <button type="button" class="badge" onclick="filterProducts('Inversores', this)">Inversores</button>
+      <button type="button" class="badge" onclick="filterProducts('Baterías', this)">Baterías</button>
+      <button type="button" class="badge" onclick="filterProducts('Protecciones', this)">Protecciones</button>
+      <button type="button" class="badge" onclick="filterProducts('Cable solar', this)">Cable solar</button>
+      <button type="button" class="badge" onclick="filterProducts('Accesorios', this)">Accesorios</button>
+    </div>
+  </section>
+
+  <div class="grid">
+    <main>
+      <div class="card">
+        <h2 class="section-title">1. Datos del instalador</h2>
+        <div class="form-grid">
+          <div><label>Nombre y apellido</label><input id="nombre" placeholder="Ej: Juan Pérez"></div>
+          <div><label>Empresa</label><input id="empresa" placeholder="Ej: Solar Norte"></div>
+          <div><label>WhatsApp</label><input id="whatsapp" placeholder="Ej: 11 5555-5555"></div>
+          <div><label>Email</label><input id="email" placeholder="Ej: ventas@empresa.com"></div>
+          <div><label>Provincia</label><select id="provincia"><option>Seleccionar provincia</option><option>Buenos Aires</option><option>CABA</option><option>Córdoba</option><option>Santa Fe</option><option>Mendoza</option><option>Misiones</option><option>Otra</option></select></div>
+          <div><label>¿Ya es cliente TEDLE?</label><select id="cliente"><option>Seleccionar</option><option>Sí</option><option>No</option><option>No estoy seguro</option></select></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">2. Datos de la solicitud</h2>
+        <div class="form-grid">
+          <div><label>Tipo de solicitud</label><select id="tipoSolicitud"><option>Cotización de materiales</option><option>Pedido de productos</option><option>Revisión técnica de materiales</option><option>Reposición / compra rápida</option><option>Proyecto en evaluación</option></select></div>
+          <div><label>Tipo de sistema</label><select id="tipoSistema"><option>Seleccionar</option><option>On-grid monofásico</option><option>On-grid trifásico</option><option>Híbrido monofásico</option><option>Híbrido trifásico</option><option>Off-grid</option><option>Baterías / backup</option><option>No estoy seguro</option></select></div>
+          <div><label>Potencia estimada</label><input id="potencia" placeholder="Ej: 6 kW / 20 kW / 50 kW"></div>
+          <div><label>Ubicación del proyecto</label><input id="ubicacion" placeholder="Ej: Córdoba capital / Posadas / CABA"></div>
+          <div><label>Forma de entrega</label><select id="entrega"><option>A definir</option><option>Retiro</option><option>Necesito cotizar envío</option></select></div>
+          <div><label>Prioridad</label><select id="prioridad"><option>Consulta general</option><option>Necesito cotizar esta semana</option><option>Proyecto avanzado</option><option>Compra urgente</option></select></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">3. Seleccionar productos desde la lista</h2>
+        <div class="addbox">
+          <div class="form-grid">
+            <div class="full">
+              <label>Producto de lista TEDLE</label>
+              <select id="producto" onchange="updateProductInfo()">
+                <option value="">Seleccionar producto</option>
+<optgroup label="Paneles">
+<option data-cat="Paneles" value="Paneles|||AS-7M120N-BHC-480W|||Amerisolar panel solar bifacial monocristalino tipo N 480Wp">AS-7M120N-BHC-480W — Amerisolar panel solar bifacial monocristalino tipo N 480Wp</option>
+<option data-cat="Paneles" value="Paneles|||AS-7M120N-BHC-485W|||Amerisolar panel solar bifacial monocristalino tipo N 485Wp">AS-7M120N-BHC-485W — Amerisolar panel solar bifacial monocristalino tipo N 485Wp</option>
+<option data-cat="Paneles" value="Paneles|||RSM144-9-585-BNDG|||Risen panel solar bifacial monocristalino tipo N 585Wp">RSM144-9-585-BNDG — Risen panel solar bifacial monocristalino tipo N 585Wp</option>
+<option data-cat="Paneles" value="Paneles|||RSM132-8-720-BHDG|||Risen panel solar bifacial tipo N HJT 720Wp">RSM132-8-720-BHDG — Risen panel solar bifacial tipo N HJT 720Wp</option>
+</optgroup>
+<optgroup label="Inversores">
+<option data-cat="Inversores" value="Inversores|||GW3300-XS-30|||GoodWe on-grid monofásico 3.3kW">GW3300-XS-30 — GoodWe on-grid monofásico 3.3kW</option>
+<option data-cat="Inversores" value="Inversores|||GW6000-DNS-30|||GoodWe on-grid monofásico 6kW">GW6000-DNS-30 — GoodWe on-grid monofásico 6kW</option>
+<option data-cat="Inversores" value="Inversores|||GW3000-ES-20|||GoodWe híbrido monofásico 3kW">GW3000-ES-20 — GoodWe híbrido monofásico 3kW</option>
+<option data-cat="Inversores" value="Inversores|||GW6000M-ES-20|||GoodWe híbrido monofásico 6kW">GW6000M-ES-20 — GoodWe híbrido monofásico 6kW</option>
+<option data-cat="Inversores" value="Inversores|||GW8000-ES-C10|||GoodWe híbrido monofásico 8kW">GW8000-ES-C10 — GoodWe híbrido monofásico 8kW</option>
+<option data-cat="Inversores" value="Inversores|||GW10K-SDT-30|||GoodWe on-grid trifásico 10kW">GW10K-SDT-30 — GoodWe on-grid trifásico 10kW</option>
+<option data-cat="Inversores" value="Inversores|||GW15K-SDT-30|||GoodWe on-grid trifásico 15kW">GW15K-SDT-30 — GoodWe on-grid trifásico 15kW</option>
+<option data-cat="Inversores" value="Inversores|||GW20K-SDT-30|||GoodWe on-grid trifásico 20kW">GW20K-SDT-30 — GoodWe on-grid trifásico 20kW</option>
+<option data-cat="Inversores" value="Inversores|||GW25KT-DT|||GoodWe on-grid trifásico 25kW">GW25KT-DT — GoodWe on-grid trifásico 25kW</option>
+<option data-cat="Inversores" value="Inversores|||GW25K-SDT-C30|||GoodWe on-grid trifásico 25kW">GW25K-SDT-C30 — GoodWe on-grid trifásico 25kW</option>
+<option data-cat="Inversores" value="Inversores|||GW30K-SDT-C30|||GoodWe on-grid trifásico 30kW">GW30K-SDT-C30 — GoodWe on-grid trifásico 30kW</option>
+<option data-cat="Inversores" value="Inversores|||GW33K-SDT-C30|||GoodWe on-grid trifásico 33kW">GW33K-SDT-C30 — GoodWe on-grid trifásico 33kW</option>
+<option data-cat="Inversores" value="Inversores|||GW36K-SDT-C30|||GoodWe on-grid trifásico 36kW">GW36K-SDT-C30 — GoodWe on-grid trifásico 36kW</option>
+<option data-cat="Inversores" value="Inversores|||GW60KS-MT|||GoodWe on-grid trifásico 60kW">GW60KS-MT — GoodWe on-grid trifásico 60kW</option>
+<option data-cat="Inversores" value="Inversores|||GW75K-SMT|||GoodWe on-grid trifásico 75kW">GW75K-SMT — GoodWe on-grid trifásico 75kW</option>
+<option data-cat="Inversores" value="Inversores|||GW80K-SMT|||GoodWe on-grid trifásico 80kW">GW80K-SMT — GoodWe on-grid trifásico 80kW</option>
+<option data-cat="Inversores" value="Inversores|||GW100K-GT|||GoodWe on-grid trifásico 100kW">GW100K-GT — GoodWe on-grid trifásico 100kW</option>
+<option data-cat="Inversores" value="Inversores|||GW110K-GT|||GoodWe on-grid trifásico 110kW">GW110K-GT — GoodWe on-grid trifásico 110kW</option>
+<option data-cat="Inversores" value="Inversores|||GW125K-GT|||GoodWe on-grid trifásico 125kW">GW125K-GT — GoodWe on-grid trifásico 125kW</option>
+<option data-cat="Inversores" value="Inversores|||GW8000-ET-20 Híbrido FLEX|||GoodWe híbrido trifásico 8kW">GW8000-ET-20 Híbrido FLEX — GoodWe híbrido trifásico 8kW</option>
+<option data-cat="Inversores" value="Inversores|||GW10K-ET-L-G10|||GoodWe híbrido trifásico 10kW">GW10K-ET-L-G10 — GoodWe híbrido trifásico 10kW</option>
+<option data-cat="Inversores" value="Inversores|||GW12K-ET-20 Híbrido FLEX|||GoodWe híbrido trifásico 12kW FLEX">GW12K-ET-20 Híbrido FLEX — GoodWe híbrido trifásico 12kW FLEX</option>
+<option data-cat="Inversores" value="Inversores|||GW12K-ET-20|||GoodWe híbrido trifásico 12kW">GW12K-ET-20 — GoodWe híbrido trifásico 12kW</option>
+<option data-cat="Inversores" value="Inversores|||GW15K-ET-20 Híbrido FLEX|||GoodWe híbrido trifásico 15kW FLEX">GW15K-ET-20 Híbrido FLEX — GoodWe híbrido trifásico 15kW FLEX</option>
+<option data-cat="Inversores" value="Inversores|||GW15K-ET-20|||GoodWe híbrido trifásico 15kW">GW15K-ET-20 — GoodWe híbrido trifásico 15kW</option>
+<option data-cat="Inversores" value="Inversores|||GW15K-ET-L-G10|||GoodWe híbrido trifásico 15kW">GW15K-ET-L-G10 — GoodWe híbrido trifásico 15kW</option>
+<option data-cat="Inversores" value="Inversores|||GW20K-ET Híbrido FLEX|||GoodWe híbrido trifásico 20kW">GW20K-ET Híbrido FLEX — GoodWe híbrido trifásico 20kW</option>
+<option data-cat="Inversores" value="Inversores|||GW30K-ET Híbrido FLEX|||GoodWe híbrido trifásico 30kW">GW30K-ET Híbrido FLEX — GoodWe híbrido trifásico 30kW</option>
+<option data-cat="Inversores" value="Inversores|||GW50K-ET-10|||GoodWe híbrido trifásico 50kW">GW50K-ET-10 — GoodWe híbrido trifásico 50kW</option>
+<option data-cat="Inversores" value="Inversores|||GW100K-ET-G10|||GoodWe híbrido trifásico 100kW">GW100K-ET-G10 — GoodWe híbrido trifásico 100kW</option>
+<option data-cat="Inversores" value="Inversores|||SPF 3000 TL HVM 24|||Growatt off-grid 3kW 24V">SPF 3000 TL HVM 24 — Growatt off-grid 3kW 24V</option>
+<option data-cat="Inversores" value="Inversores|||SPF 3000 TL HVM 48|||Growatt off-grid 3kW 48V">SPF 3000 TL HVM 48 — Growatt off-grid 3kW 48V</option>
+<option data-cat="Inversores" value="Inversores|||SPF 6000 ES Plus|||Growatt off-grid 6kW">SPF 6000 ES Plus — Growatt off-grid 6kW</option>
+<option data-cat="Inversores" value="Inversores|||J6500HC|||JSD Solar off-grid monofásico 6.5kW">J6500HC — JSD Solar off-grid monofásico 6.5kW</option>
+</optgroup>
+<optgroup label="Baterías">
+<option data-cat="Baterías" value="Baterías|||LX U5.0-30|||GoodWe batería LiFePO4 baja tensión 5.0kWh">LX U5.0-30 — GoodWe batería LiFePO4 baja tensión 5.0kWh</option>
+<option data-cat="Baterías" value="Baterías|||GW14.3-BAT-LV-G10|||GoodWe batería LiFePO4 baja tensión 14.3kWh">GW14.3-BAT-LV-G10 — GoodWe batería LiFePO4 baja tensión 14.3kWh</option>
+<option data-cat="Baterías" value="Baterías|||LX D5.0-10|||GoodWe batería LiFePO4 alta tensión 5.0kWh">LX D5.0-10 — GoodWe batería LiFePO4 alta tensión 5.0kWh</option>
+<option data-cat="Baterías" value="Baterías|||GW61.4-BAT-AC-G10|||GoodWe batería HV 61.4kWh">GW61.4-BAT-AC-G10 — GoodWe batería HV 61.4kWh</option>
+<option data-cat="Baterías" value="Baterías|||GW102.4-BAT-AC-G10|||GoodWe batería HV 102.4kWh">GW102.4-BAT-AC-G10 — GoodWe batería HV 102.4kWh</option>
+<option data-cat="Baterías" value="Baterías|||GW112.6-BAT-AC-G10|||GoodWe batería HV 112.6kWh">GW112.6-BAT-AC-G10 — GoodWe batería HV 112.6kWh</option>
+<option data-cat="Baterías" value="Baterías|||51.2NESR100|||Narada batería LFP 51.2V 5.12kWh">51.2NESR100 — Narada batería LFP 51.2V 5.12kWh</option>
+<option data-cat="Baterías" value="Baterías|||RT12100G31|||Pylontech batería LFP 12.8V 100Ah">RT12100G31 — Pylontech batería LFP 12.8V 100Ah</option>
+<option data-cat="Baterías" value="Baterías|||US5000|||Pylontech batería LFP 48V 4.8kWh">US5000 — Pylontech batería LFP 48V 4.8kWh</option>
+<option data-cat="Baterías" value="Baterías|||UF5000|||Pylontech batería LFP 51.2V 5.12kWh">UF5000 — Pylontech batería LFP 51.2V 5.12kWh</option>
+<option data-cat="Baterías" value="Baterías|||FIDUS - FB-L-5.12|||Pylontech Fidus batería LFP 51.2V 5.12kWh IP65">FIDUS - FB-L-5.12 — Pylontech Fidus batería LFP 51.2V 5.12kWh IP65</option>
+<option data-cat="Baterías" value="Baterías|||H48074|||Pylontech módulo de batería LFP alta tensión">H48074 — Pylontech módulo de batería LFP alta tensión</option>
+<option data-cat="Baterías" value="Baterías|||SC1000-100S|||Pylontech BMS para baterías H48074">SC1000-100S — Pylontech BMS para baterías H48074</option>
+<option data-cat="Baterías" value="Baterías|||J4U48100|||JSD Solar batería LFP rackeable 51.2V 5kWh">J4U48100 — JSD Solar batería LFP rackeable 51.2V 5kWh</option>
+</optgroup>
+<optgroup label="Protecciones">
+<option data-cat="Protecciones" value="Protecciones|||BHS-1/1 OL|||ZJBENY protección de sobrecarga PV 1 entrada / 1 salida">BHS-1/1 OL — ZJBENY protección de sobrecarga PV 1 entrada / 1 salida</option>
+<option data-cat="Protecciones" value="Protecciones|||BHS-1/1|||ZJBENY string box 1 entrada / 1 salida">BHS-1/1 — ZJBENY string box 1 entrada / 1 salida</option>
+<option data-cat="Protecciones" value="Protecciones|||BHS-2/1|||ZJBENY string box 2 entradas / 1 salida">BHS-2/1 — ZJBENY string box 2 entradas / 1 salida</option>
+<option data-cat="Protecciones" value="Protecciones|||BHS-4/2|||ZJBENY string box 4 entradas / 2 salidas">BHS-4/2 — ZJBENY string box 4 entradas / 2 salidas</option>
+<option data-cat="Protecciones" value="Protecciones|||BYT.2-32|||ZJBENY seccionador rotativo CC 1200V 32A">BYT.2-32 — ZJBENY seccionador rotativo CC 1200V 32A</option>
+<option data-cat="Protecciones" value="Protecciones|||BB1H-63 2P|||ZJBENY seccionador basculante CC 2 polos">BB1H-63 2P — ZJBENY seccionador basculante CC 2 polos</option>
+<option data-cat="Protecciones" value="Protecciones|||BB1H-63 4P 40A|||ZJBENY seccionador basculante CC 4 polos 40A">BB1H-63 4P 40A — ZJBENY seccionador basculante CC 4 polos 40A</option>
+<option data-cat="Protecciones" value="Protecciones|||BB1H-63 4P 63A|||ZJBENY seccionador basculante CC 4 polos 63A">BB1H-63 4P 63A — ZJBENY seccionador basculante CC 4 polos 63A</option>
+<option data-cat="Protecciones" value="Protecciones|||BB1-63-2P|||ZJBENY interruptor termomagnético CC 2 polos">BB1-63-2P — ZJBENY interruptor termomagnético CC 2 polos</option>
+<option data-cat="Protecciones" value="Protecciones|||BB1-63-4P|||ZJBENY interruptor termomagnético CC 4 polos">BB1-63-4P — ZJBENY interruptor termomagnético CC 4 polos</option>
+<option data-cat="Protecciones" value="Protecciones|||BB2-40-2P|||ZJBENY interruptor termomagnético CC 40A 2 polos">BB2-40-2P — ZJBENY interruptor termomagnético CC 40A 2 polos</option>
+<option data-cat="Protecciones" value="Protecciones|||BDM 125|||ZJBENY interruptor termomagnético CC 125A">BDM 125 — ZJBENY interruptor termomagnético CC 125A</option>
+<option data-cat="Protecciones" value="Protecciones|||BDM 125 IP65|||ZJBENY interruptor termomagnético CC 125A IP65">BDM 125 IP65 — ZJBENY interruptor termomagnético CC 125A IP65</option>
+<option data-cat="Protecciones" value="Protecciones|||BDM 250|||ZJBENY interruptor termomagnético CC 250A">BDM 250 — ZJBENY interruptor termomagnético CC 250A</option>
+<option data-cat="Protecciones" value="Protecciones|||BDM 250 IP65|||ZJBENY interruptor termomagnético CC 250A IP65">BDM 250 IP65 — ZJBENY interruptor termomagnético CC 250A IP65</option>
+<option data-cat="Protecciones" value="Protecciones|||BUD-40-2|||ZJBENY descargador CC 2 polos tipo 2">BUD-40-2 — ZJBENY descargador CC 2 polos tipo 2</option>
+<option data-cat="Protecciones" value="Protecciones|||BUD-40-3|||ZJBENY descargador CC 3 polos tipo 2">BUD-40-3 — ZJBENY descargador CC 3 polos tipo 2</option>
+<option data-cat="Protecciones" value="Protecciones|||BUD-1500|||ZJBENY descargador CC 1500V tipo 2">BUD-1500 — ZJBENY descargador CC 1500V tipo 2</option>
+<option data-cat="Protecciones" value="Protecciones|||BR-30|||ZJBENY base portafusible FV unipolar">BR-30 — ZJBENY base portafusible FV unipolar</option>
+<option data-cat="Protecciones" value="Protecciones|||OSVP_30L|||ZJBENY base portafusible FV 1500V">OSVP_30L — ZJBENY base portafusible FV 1500V</option>
+<option data-cat="Protecciones" value="Protecciones|||OSVP30 15A|||ZJBENY fusible gPV 1000VDC 15A">OSVP30 15A — ZJBENY fusible gPV 1000VDC 15A</option>
+<option data-cat="Protecciones" value="Protecciones|||OSVP30 20A|||ZJBENY fusible gPV 1000VDC 20A">OSVP30 20A — ZJBENY fusible gPV 1000VDC 20A</option>
+<option data-cat="Protecciones" value="Protecciones|||OSVP30L 15A|||ZJBENY fusible gPV 1500VDC 15A">OSVP30L 15A — ZJBENY fusible gPV 1500VDC 15A</option>
+<option data-cat="Protecciones" value="Protecciones|||OSVP30L 20A|||ZJBENY fusible gPV 1500VDC 20A">OSVP30L 20A — ZJBENY fusible gPV 1500VDC 20A</option>
+<option data-cat="Protecciones" value="Protecciones|||BUA-40-2P|||ZJBENY descargador CA 2 polos tipo 2">BUA-40-2P — ZJBENY descargador CA 2 polos tipo 2</option>
+<option data-cat="Protecciones" value="Protecciones|||BUA-40-4P|||ZJBENY descargador CA 3 polos tipo 2">BUA-40-4P — ZJBENY descargador CA 3 polos tipo 2</option>
+<option data-cat="Protecciones" value="Protecciones|||BB1LE-63 2P 25A 30mA|||ZJBENY disyuntor diferencial CA 2P 25A">BB1LE-63 2P 25A 30mA — ZJBENY disyuntor diferencial CA 2P 25A</option>
+<option data-cat="Protecciones" value="Protecciones|||BB1LE-63 2P 40A 30mA|||ZJBENY disyuntor diferencial CA 2P 40A">BB1LE-63 2P 40A 30mA — ZJBENY disyuntor diferencial CA 2P 40A</option>
+<option data-cat="Protecciones" value="Protecciones|||BB1LE-63 4P 40A 30mA|||ZJBENY disyuntor diferencial CA 4P 40A">BB1LE-63 4P 40A 30mA — ZJBENY disyuntor diferencial CA 4P 40A</option>
+<option data-cat="Protecciones" value="Protecciones|||BB1LE-63 4P 63A 100mA|||ZJBENY disyuntor diferencial CA 4P 63A">BB1LE-63 4P 63A 100mA — ZJBENY disyuntor diferencial CA 4P 63A</option>
+</optgroup>
+<optgroup label="Cable solar">
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 4mm2 - Negro - 100m|||Winpower cable solar 4mm² negro rollo 100m">Cable FV 4mm2 - Negro - 100m — Winpower cable solar 4mm² negro rollo 100m</option>
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 4mm2 - Rojo - 100m|||Winpower cable solar 4mm² rojo rollo 100m">Cable FV 4mm2 - Rojo - 100m — Winpower cable solar 4mm² rojo rollo 100m</option>
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 4mm2 - Negro - 250m|||Winpower cable solar 4mm² negro rollo 250m">Cable FV 4mm2 - Negro - 250m — Winpower cable solar 4mm² negro rollo 250m</option>
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 4mm2 - Rojo - 250m|||Winpower cable solar 4mm² rojo rollo 250m">Cable FV 4mm2 - Rojo - 250m — Winpower cable solar 4mm² rojo rollo 250m</option>
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 4mm2 - Negro - 1000m|||Winpower cable solar 4mm² negro rollo 1000m">Cable FV 4mm2 - Negro - 1000m — Winpower cable solar 4mm² negro rollo 1000m</option>
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 4mm2 - Rojo - 1000m|||Winpower cable solar 4mm² rojo rollo 1000m">Cable FV 4mm2 - Rojo - 1000m — Winpower cable solar 4mm² rojo rollo 1000m</option>
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 6mm2 - Negro - 100m|||Winpower cable solar 6mm² negro rollo 100m">Cable FV 6mm2 - Negro - 100m — Winpower cable solar 6mm² negro rollo 100m</option>
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 6mm2 - Rojo - 100m|||Winpower cable solar 6mm² rojo rollo 100m">Cable FV 6mm2 - Rojo - 100m — Winpower cable solar 6mm² rojo rollo 100m</option>
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 6mm2 - Negro - 250m|||Winpower cable solar 6mm² negro rollo 250m">Cable FV 6mm2 - Negro - 250m — Winpower cable solar 6mm² negro rollo 250m</option>
+<option data-cat="Cable solar" value="Cable solar|||Cable FV 6mm2 - Rojo - 250m|||Winpower cable solar 6mm² rojo rollo 250m">Cable FV 6mm2 - Rojo - 250m — Winpower cable solar 6mm² rojo rollo 250m</option>
+</optgroup>
+<optgroup label="Accesorios">
+<option data-cat="Accesorios" value="Accesorios|||CT90-5|||GoodWe transformador de corriente 90A cable 5m">CT90-5 — GoodWe transformador de corriente 90A cable 5m</option>
+<option data-cat="Accesorios" value="Accesorios|||CT90-30|||GoodWe transformador de corriente 90A cable 30m">CT90-30 — GoodWe transformador de corriente 90A cable 30m</option>
+<option data-cat="Accesorios" value="Accesorios|||CT250-3020|||GoodWe transformador de corriente 250A ventana 30x20mm">CT250-3020 — GoodWe transformador de corriente 250A ventana 30x20mm</option>
+<option data-cat="Accesorios" value="Accesorios|||CT250-6040|||GoodWe transformador de corriente 250A ventana 60x40mm">CT250-6040 — GoodWe transformador de corriente 250A ventana 60x40mm</option>
+<option data-cat="Accesorios" value="Accesorios|||CT1000-8040|||GoodWe transformador de corriente 1000A ventana 80x40mm">CT1000-8040 — GoodWe transformador de corriente 1000A ventana 80x40mm</option>
+<option data-cat="Accesorios" value="Accesorios|||GM 3000|||GoodWe medidor inteligente trifásico con 3 TC">GM 3000 — GoodWe medidor inteligente trifásico con 3 TC</option>
+<option data-cat="Accesorios" value="Accesorios|||GM330|||GoodWe medidor inteligente trifásico sin TC">GM330 — GoodWe medidor inteligente trifásico sin TC</option>
+<option data-cat="Accesorios" value="Accesorios|||GM3000C|||GoodWe medidor inteligente trifásico sin TC">GM3000C — GoodWe medidor inteligente trifásico sin TC</option>
+<option data-cat="Accesorios" value="Accesorios|||HK 3000 (16mm, 120A)|||GoodWe medidor inteligente trifásico Wi-Fi/LAN">HK 3000 (16mm, 120A) — GoodWe medidor inteligente trifásico Wi-Fi/LAN</option>
+<option data-cat="Accesorios" value="Accesorios|||HK 3000 (24mm, 200A)|||GoodWe medidor inteligente trifásico Wi-Fi/LAN">HK 3000 (24mm, 200A) — GoodWe medidor inteligente trifásico Wi-Fi/LAN</option>
+<option data-cat="Accesorios" value="Accesorios|||HK 1000 (16mm, 120A)|||GoodWe medidor inteligente monofásico Wi-Fi/LAN">HK 1000 (16mm, 120A) — GoodWe medidor inteligente monofásico Wi-Fi/LAN</option>
+<option data-cat="Accesorios" value="Accesorios|||SEC1000|||GoodWe medidor inteligente para monitoreo y control de exportación">SEC1000 — GoodWe medidor inteligente para monitoreo y control de exportación</option>
+<option data-cat="Accesorios" value="Accesorios|||EZLink|||GoodWe dongle Wi-Fi para paralelismo ES G2 &amp; ES Uniq">EZLink — GoodWe dongle Wi-Fi para paralelismo ES G2 &amp; ES Uniq</option>
+<option data-cat="Accesorios" value="Accesorios|||EZLink3000|||GoodWe dongle Wi-Fi para paralelismo y monitoreo ET 15-30K">EZLink3000 — GoodWe dongle Wi-Fi para paralelismo y monitoreo ET 15-30K</option>
+<option data-cat="Accesorios" value="Accesorios|||STS200-80-10|||GoodWe interruptor de transferencia automática ET 40-50K">STS200-80-10 — GoodWe interruptor de transferencia automática ET 40-50K</option>
+<option data-cat="Accesorios" value="Accesorios|||GW125K-STS-G10|||GoodWe interruptor de transferencia automática ET 50-100K">GW125K-STS-G10 — GoodWe interruptor de transferencia automática ET 50-100K</option>
+<option data-cat="Accesorios" value="Accesorios|||Cód. Activ. Bat. GW….-ET-20|||GoodWe código para activación de ES G2 Híbrido FLEX">Cód. Activ. Bat. GW….-ET-20 — GoodWe código para activación de ES G2 Híbrido FLEX</option>
+<option data-cat="Accesorios" value="Accesorios|||Acc de pared Lynx D|||GoodWe accesorio de pared para Lynx D">Acc de pared Lynx D — GoodWe accesorio de pared para Lynx D</option>
+<option data-cat="Accesorios" value="Accesorios|||Base para Lynx D|||GoodWe base de montaje en piso para Lynx D">Base para Lynx D — GoodWe base de montaje en piso para Lynx D</option>
+<option data-cat="Accesorios" value="Accesorios|||Kit cables 51.2NESR100 - 1m|||Narada par de cables de potencia 25mm² 1m">Kit cables 51.2NESR100 - 1m — Narada par de cables de potencia 25mm² 1m</option>
+<option data-cat="Accesorios" value="Accesorios|||Kit cables 51.2NESR100 - 0.6m|||Narada par de cables de potencia 25mm² 0.6m">Kit cables 51.2NESR100 - 0.6m — Narada par de cables de potencia 25mm² 0.6m</option>
+<option data-cat="Accesorios" value="Accesorios|||Soporte 51.2NESR100|||Narada soportes para batería 51.2NESR100">Soporte 51.2NESR100 — Narada soportes para batería 51.2NESR100</option>
+<option data-cat="Accesorios" value="Accesorios|||Soporte US2|||Pylontech soporte para US2000">Soporte US2 — Pylontech soporte para US2000</option>
+<option data-cat="Accesorios" value="Accesorios|||Soporte US3|||Pylontech soporte para US3000/3000C">Soporte US3 — Pylontech soporte para US3000/3000C</option>
+<option data-cat="Accesorios" value="Accesorios|||Soporte US5|||Pylontech soporte para US5000">Soporte US5 — Pylontech soporte para US5000</option>
+<option data-cat="Accesorios" value="Accesorios|||Kit cables US|||Pylontech kit cables potencia y comunicación">Kit cables US — Pylontech kit cables potencia y comunicación</option>
+<option data-cat="Accesorios" value="Accesorios|||Shine WiFi Module|||Growatt módulo Wi-Fi">Shine WiFi Module — Growatt módulo Wi-Fi</option>
+<option data-cat="Accesorios" value="Accesorios|||Wi-Fi Plug Pro 05|||JSD Solar módulo Wi-Fi">Wi-Fi Plug Pro 05 — JSD Solar módulo Wi-Fi</option>
+<option data-cat="Accesorios" value="Accesorios|||Wi-Fi Plug Pro|||JSD Solar módulo Wi-Fi">Wi-Fi Plug Pro — JSD Solar módulo Wi-Fi</option>
+<option data-cat="Accesorios" value="Accesorios|||QC4.10-cd|||QC Solar par MC4 macho/hembra">QC4.10-cd — QC Solar par MC4 macho/hembra</option>
+<option data-cat="Accesorios" value="Accesorios|||QC4.Y|||QC Solar par MC4 tipo branch 2 entradas / 1 salida">QC4.Y — QC Solar par MC4 tipo branch 2 entradas / 1 salida</option>
+</optgroup>
+
+              </select>
+              <div id="productInfo" class="product-info">El desplegable ya viene cargado. También podés filtrar por categoría con los botones de arriba.</div>
+            </div>
+            <div><label>Cantidad</label><input id="qty" type="number" min="1" step="1" value="1"></div>
+            <div><label>Observación del ítem</label><input id="itemObs" placeholder="Opcional"></div>
+          </div>
+          <div class="actions">
+            <button type="button" class="primary" onclick="addItem()">Agregar al carrito</button>
+            <button type="button" class="secondary" onclick="clearItem()">Limpiar</button>
+          </div>
+        </div>
+
+        <div class="products">
+          <table>
+            <thead><tr><th>Categoría</th><th>Modelo</th><th>Descripción</th><th>Cant.</th><th></th></tr></thead>
+            <tbody id="itemsBody"><tr><td colspan="5" class="empty">Todavía no agregaste productos al carrito.</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="form-grid" style="margin-top:12px">
+          <div class="full"><label>Observaciones generales</label><textarea id="observaciones" placeholder="Ej: Necesito validar protecciones, disponibilidad, alternativa de inversor o compatibilidad con baterías."></textarea></div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="green" onclick="sendWhatsApp()">Abrir WhatsApp con el pedido</button>
+          <button type="button" class="secondary" onclick="showSummary()">Ver resumen</button>
+          <button type="button" class="secondary" onclick="copySummary()">Copiar pedido</button>
+        </div>
+        <div id="summaryBox" class="summary"></div>
+      </div>
+    </main>
+
+    <aside>
+      <div class="aside-box"><h3>Selección desde LPU</h3><p>El instalador selecciona productos desde la lista cargada. No hay precios, descuentos ni stock visibles.</p></div>
+      <div class="status"><strong>Importante:</strong><br>Este carrito no confirma compra, precios, stock ni descuentos de forma automática. Al tocar el botón se abrirá WhatsApp con el mensaje prellenado para que el instalador confirme el envío.</div>
+      <div class="aside-box"><h3>¿Qué pasa después?</h3><ol class="steps"><li>El instalador selecciona productos.</li><li>Toca “Abrir WhatsApp con el pedido”.</li><li>WhatsApp se abre con el pedido armado.</li><li>El instalador toca enviar.</li><li>TEDLE valida y responde la cotización.</li></ol></div>
+      <div class="success"><strong>Tip:</strong><br>Si el instalador no encuentra un producto, puede aclararlo en observaciones generales.</div>
+    </aside>
+  </div>
+  <div class="footer-note">Versión corregida — desplegable con productos cargados directamente en el HTML.</div>
+</div>
+
+<script>
+const WHATSAPP_NUMBER = "5491140289444";
+let ITEMS = [];
+const ALL_OPTIONS_HTML = document.getElementById("producto").innerHTML;
+
+function parseValue(value) {
+  const parts = value.split("|||");
+  return {cat: parts[0] || "", model: parts[1] || "", desc: parts[2] || ""};
+}
+
+function updateProductInfo() {
+  const value = document.getElementById("producto").value;
+  const info = document.getElementById("productInfo");
+  if(!value) {
+    info.textContent = "Seleccioná un producto de la lista.";
+    return;
+  }
+  const p = parseValue(value);
+  info.innerHTML = "<strong>" + p.model + "</strong> · " + p.cat + "<br>" + p.desc;
+}
+
+function filterProducts(category, btn) {
+  document.querySelectorAll(".badge").forEach(b => b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+
+  const select = document.getElementById("producto");
+  select.innerHTML = ALL_OPTIONS_HTML;
+
+  if(category !== "Todos") {
+    Array.from(select.querySelectorAll("option")).forEach(opt => {
+      if(opt.value && opt.dataset.cat !== category) opt.remove();
+    });
+    Array.from(select.querySelectorAll("optgroup")).forEach(group => {
+      if(group.label !== category) group.remove();
+    });
+  }
+
+  select.value = "";
+  document.getElementById("productInfo").textContent = category === "Todos" ? "Mostrando todos los productos." : "Filtro activo: " + category + ". Abrí el desplegable para seleccionar.";
+}
+
+function clearItem() {
+  document.getElementById("qty").value = "1";
+  document.getElementById("producto").value = "";
+  document.getElementById("itemObs").value = "";
+  updateProductInfo();
+}
+
+function addItem() {
+  const value = document.getElementById("producto").value;
+  const qty = parseInt(document.getElementById("qty").value || "0", 10);
+  const obs = document.getElementById("itemObs").value.trim();
+
+  if(!value) {
+    alert("Seleccioná un producto del desplegable.");
+    return;
+  }
+  if(!qty || qty < 1) {
+    alert("Ingresá una cantidad válida.");
+    return;
+  }
+
+  const p = parseValue(value);
+  ITEMS.push({...p, qty, obs});
+  renderItems();
+  clearItem();
+}
+
+function removeItem(index) {
+  ITEMS.splice(index, 1);
+  renderItems();
+}
+
+function renderItems() {
+  const body = document.getElementById("itemsBody");
+  if(ITEMS.length === 0) {
+    body.innerHTML = '<tr><td colspan="5" class="empty">Todavía no agregaste productos al carrito.</td></tr>';
+    return;
+  }
+  body.innerHTML = ITEMS.map((item, index) => `
+    <tr>
+      <td>${item.cat}</td>
+      <td><strong>${item.model}</strong>${item.obs ? '<br><span class="product-info">Obs: '+item.obs+'</span>' : ''}</td>
+      <td>${item.desc}</td>
+      <td>${item.qty}</td>
+      <td><button type="button" class="danger" onclick="removeItem(${index})">Quitar</button></td>
+    </tr>
+  `).join("");
+}
+
+function clean(id) {
+  const v = (document.getElementById(id).value || "").trim();
+  if(!v || v === "Seleccionar" || v === "Seleccionar provincia") return "";
+  return v;
+}
+
+function addLine(lines, label, value) {
+  if(value) lines.push(label + ": " + value);
+}
+
+function buildSummary() {
+  if(ITEMS.length === 0) return null;
+  const lines = ["CARRITO DE COMPRAS TEDLE", "", "DATOS DEL INSTALADOR"];
+  addLine(lines, "Cliente", clean("nombre"));
+  addLine(lines, "Empresa", clean("empresa"));
+  addLine(lines, "WhatsApp", clean("whatsapp"));
+  addLine(lines, "Email", clean("email"));
+  addLine(lines, "Provincia", clean("provincia"));
+  addLine(lines, "Cliente TEDLE", clean("cliente"));
+  lines.push("", "DATOS DE LA SOLICITUD");
+  addLine(lines, "Tipo de solicitud", clean("tipoSolicitud"));
+  addLine(lines, "Tipo de sistema", clean("tipoSistema"));
+  addLine(lines, "Potencia estimada", clean("potencia"));
+  addLine(lines, "Ubicación", clean("ubicacion"));
+  addLine(lines, "Entrega", clean("entrega"));
+  addLine(lines, "Prioridad", clean("prioridad"));
+  lines.push("", "PRODUCTOS DEL CARRITO");
+  ITEMS.forEach(item => lines.push("- " + item.qty + " x " + item.model + " — " + item.desc + " (" + item.cat + ")" + (item.obs ? " | Obs: " + item.obs : "")));
+  const obs = clean("observaciones");
+  if(obs) lines.push("", "OBSERVACIONES GENERALES", obs);
+  lines.push("", "Nota: solicito cotización. Este carrito no confirma compra, precio, stock ni descuento.");
+  return lines.join("\n");
+}
+
+function validate() {
+  if(ITEMS.length === 0) { alert("Agregá al menos un producto al carrito antes de enviar."); return false; }
+  if(!clean("nombre")) { alert("Completá nombre y apellido antes de enviar."); return false; }
+  if(!clean("whatsapp")) { alert("Completá el WhatsApp del instalador antes de enviar."); return false; }
+  return true;
+}
+
+function showSummary() {
+  const summary = buildSummary();
+  if(!summary) { alert("Agregá al menos un producto al carrito antes de generar el resumen."); return; }
+  const box = document.getElementById("summaryBox");
+  box.style.display = "block";
+  box.textContent = summary;
+}
+
+function copySummary() {
+  const summary = buildSummary();
+  if(!summary) { alert("Agregá al menos un producto al carrito antes de copiar."); return; }
+  navigator.clipboard.writeText(summary).then(() => alert("Pedido copiado.")).catch(() => { showSummary(); alert("No se pudo copiar automáticamente. Copialo desde el resumen."); });
+}
+
+function sendWhatsApp() {
+  if(!validate()) return;
+  const summary = buildSummary();
+  const url = "https://api.whatsapp.com/send?phone=" + WHATSAPP_NUMBER + "&text=" + encodeURIComponent(summary);
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
