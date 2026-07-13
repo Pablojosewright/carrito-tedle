@@ -61,7 +61,7 @@ button{border:0;border-radius:10px;padding:11px 15px;font-weight:900;cursor:poin
 <div class="container">
   <section class="hero">
     <h1>Carrito de Compras TEDLE</h1>
-    <p>Seleccioná productos cargados desde la lista de precios TEDLE, agregá cantidades y enviá la solicitud por WhatsApp. No se muestran precios, descuentos ni stock.</p>
+    <p>Seleccioná productos de la lista TEDLE, cargá cantidades y enviá tu solicitud por WhatsApp. La cotización será revisada por el equipo comercial.</p>
     <div class="badges">
       <button type="button" class="badge active" onclick="filterProducts('Todos', this)">Todos</button>
       <button type="button" class="badge" onclick="filterProducts('Paneles', this)">Paneles</button>
@@ -267,7 +267,7 @@ button{border:0;border-radius:10px;padding:11px 15px;font-weight:900;cursor:poin
         </div>
 
         <div class="actions">
-          <button type="button" class="green" onclick="sendWhatsApp()">Abrir WhatsApp con el pedido</button>
+          <button type="button" class="green" onclick="sendWhatsApp()">Enviar pedido por WhatsApp</button>
           <button type="button" class="secondary" onclick="showSummary()">Ver resumen</button>
           <button type="button" class="secondary" onclick="copySummary()">Copiar pedido</button>
         </div>
@@ -276,13 +276,23 @@ button{border:0;border-radius:10px;padding:11px 15px;font-weight:900;cursor:poin
     </main>
 
     <aside>
-      <div class="aside-box"><h3>Selección desde LPU</h3><p>El instalador selecciona productos desde la lista cargada. No hay precios, descuentos ni stock visibles.</p></div>
-      <div class="status"><strong>Importante:</strong><br>Este carrito no confirma compra, precios, stock ni descuentos de forma automática. Al tocar el botón se abrirá WhatsApp con el mensaje prellenado para que el instalador confirme el envío.</div>
-      <div class="aside-box"><h3>¿Qué pasa después?</h3><ol class="steps"><li>El instalador selecciona productos.</li><li>Toca “Abrir WhatsApp con el pedido”.</li><li>WhatsApp se abre con el pedido armado.</li><li>El instalador toca enviar.</li><li>TEDLE valida y responde la cotización.</li></ol></div>
-      <div class="success"><strong>Tip:</strong><br>Si el instalador no encuentra un producto, puede aclararlo en observaciones generales.</div>
+      <div class="aside-box">
+        <h3>Carrito para instaladores</h3>
+        <p>Seleccioná productos, cargá cantidades y enviá tu solicitud por WhatsApp.</p>
+      </div>
+
+      <div class="status">
+        <strong>Cotización sujeta a validación</strong><br>
+        La solicitud no confirma compra, precios ni stock. TEDLE revisará disponibilidad y condición comercial antes de emitir la cotización.
+      </div>
+
+      <div class="success">
+        <strong>Solicitud simple y rápida</strong><br>
+        Cuanto más completo esté el pedido, más rápido podremos responder la cotización.
+      </div>
     </aside>
   </div>
-  <div class="footer-note">Versión corregida — desplegable con productos cargados directamente en el HTML.</div>
+  <div class="footer-note">Carrito para instaladores — sin precios visibles, sin descuentos y sin confirmación automática de stock.</div>
 </div>
 
 <script>
