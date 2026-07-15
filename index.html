@@ -397,25 +397,55 @@ function addLine(lines, label, value) {
 
 function buildSummary() {
   if(ITEMS.length === 0) return null;
-  const lines = ["CARRITO DE COMPRAS TEDLE", "", "DATOS DEL INSTALADOR"];
-  addLine(lines, "Cliente", clean("nombre"));
+
+  const lines = [
+    "SOLICITUD DE COTIZACIÓN - TEDLE",
+    "Carrito para instaladores",
+    ""
+  ];
+
+  lines.push("DATOS DEL INSTALADOR");
+  lines.push("--------------------");
+  addLine(lines, "Nombre", clean("nombre"));
   addLine(lines, "Empresa", clean("empresa"));
   addLine(lines, "WhatsApp", clean("whatsapp"));
   addLine(lines, "Email", clean("email"));
   addLine(lines, "Provincia", clean("provincia"));
   addLine(lines, "Cliente TEDLE", clean("cliente"));
+
   lines.push("", "DATOS DE LA SOLICITUD");
+  lines.push("---------------------");
   addLine(lines, "Tipo de solicitud", clean("tipoSolicitud"));
   addLine(lines, "Tipo de sistema", clean("tipoSistema"));
   addLine(lines, "Potencia estimada", clean("potencia"));
   addLine(lines, "Ubicación", clean("ubicacion"));
   addLine(lines, "Entrega", clean("entrega"));
   addLine(lines, "Prioridad", clean("prioridad"));
-  lines.push("", "PRODUCTOS DEL CARRITO");
-  ITEMS.forEach(item => lines.push("- " + item.qty + " x " + item.model + " — " + item.desc + " (" + item.cat + ")" + (item.obs ? " | Obs: " + item.obs : "")));
+
+  lines.push("", "PRODUCTOS SOLICITADOS");
+  lines.push("----------------------");
+
+  ITEMS.forEach((item, index) => {
+    lines.push(
+      (index + 1) + ") Código: " + item.model,
+      "   Cantidad: " + item.qty,
+      "   Rubro: " + item.cat,
+      "   Descripción: " + item.desc
+    );
+    if(item.obs) lines.push("   Observación: " + item.obs);
+    lines.push("");
+  });
+
   const obs = clean("observaciones");
-  if(obs) lines.push("", "OBSERVACIONES GENERALES", obs);
-  lines.push("", "Nota: solicito cotización. Este carrito no confirma compra, precio, stock ni descuento.");
+  if(obs) {
+    lines.push("OBSERVACIONES GENERALES");
+    lines.push("-----------------------");
+    lines.push(obs, "");
+  }
+
+  lines.push("IMPORTANTE");
+  lines.push("La solicitud no confirma compra, precios ni stock. TEDLE revisará disponibilidad y condición comercial antes de emitir la cotización.");
+
   return lines.join("\n");
 }
 
